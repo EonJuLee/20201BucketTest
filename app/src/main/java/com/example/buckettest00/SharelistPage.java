@@ -1,6 +1,7 @@
 package com.example.buckettest00;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,12 +17,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 public class SharelistPage extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences auto;
     private FirebaseAuth mAuth= FirebaseAuth.getInstance();
     private Button logout,mylist;
     private TextView textuser;
+    private RecyclerView rview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
 
         FirebaseUser user=mAuth.getCurrentUser();
         textuser=(TextView)findViewById(R.id.sharelist_text_user);
-        textuser.setText(user.getDisplayName());
+        textuser.setText(user.getEmail());
 
         mylist=(Button)findViewById(R.id.sharelist_btn_mypage);
         logout=(Button)findViewById(R.id.sharelist_btn_logout);
