@@ -1,0 +1,2 @@
+rootProject.name='BucketTest00'
+include ':app'

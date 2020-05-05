@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "436780804895",
+    "firebase_url": "https://hiaver2.firebaseio.com",
+    "project_id": "hiaver2",
+    "storage_bucket": "hiaver2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436780804895:android:170898fa3e17b71d5b1e2a",
+        "android_client_info": {
+          "package_name": "com.example.buckettest00"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436780804895-ct4go7cce8l4hoqpalrhdo10p19pl1is.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.buckettest00",
+            "certificate_hash": "a3ca42d101e10109cfbaaa30ffdf3fc97996a91f"
+          }
+        },
+        {
+          "client_id": "436780804895-h68l51vas7ol252ui0qls62r4m5voo3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWm0JMO5HPQ5L-f7o0AliHChwUMv6gwDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436780804895-h68l51vas7ol252ui0qls62r4m5voo3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

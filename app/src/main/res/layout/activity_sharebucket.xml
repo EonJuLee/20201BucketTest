@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SharebucketActivity">
+
+    <TextView
+        android:id="@+id/sbucket_text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="버킷리스트 제목" />
+
+    <EditText
+        android:id="@+id/sbucket_edit_hash1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="해시코드 #해외여행" />
+
+    <EditText
+        android:id="@+id/sbucket_edit_hash2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="해시코드 #1순위여행지" />
+
+    <EditText
+        android:id="@+id/sbucket_edit_hash3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="나중에는 앞에 다 텍스트 넣어줘" />
+
+    <EditText
+        android:id="@+id/sbucket_edit_contents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="간단한 설명" />
+
+    <Button
+        android:id="@+id/sbucket_btn_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="공유" />
+
+    <TextView
+        android:id="@+id/sbucket_text_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+</LinearLayout>
