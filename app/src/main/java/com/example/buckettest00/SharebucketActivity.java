@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +47,7 @@ public class SharebucketActivity extends AppCompatActivity {
     private SharedPreferences auto;
     private FirebaseStorage storage = FirebaseStorage.getInstance("gs://hiaver2.appspot.com");
     private StorageReference sRef=storage.getReference();
+    private StorageReference imgReference;
     private FirebaseAuth mAuth=FirebaseAuth.getInstance();
     private FirebaseDatabase mDatabase=FirebaseDatabase.getInstance();
     private DatabaseReference mRef=mDatabase.getReference();
@@ -55,6 +58,8 @@ public class SharebucketActivity extends AppCompatActivity {
     private String username="";
     private String title="";
     private String picture="";
+    private Uri file,downloadUri;
+    private UploadTask uploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,29 +118,17 @@ public class SharebucketActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         if(requestCode==GALLERY_CODE){
-            String path=getPath(data.getData());
-            Uri file=Uri.fromFile(new File(path));
+            Uri uri=data.getData();
+            file=Uri.fromFile(new File(getPath(uri)));
             try{
-                Bitmap bitmap=MediaStore.Images.Media.getBitmap(getContentResolver(),data.getData());
+                Bitmap bitmap=MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
                 imgView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            picture="images/"+file.getLastPathSegment();
-            sRef.child(picture).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    showToast("사진을 추가했습니다");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    showToast("사진을 추가하지 못했습니다");
-                }
-            });
-
+            imgReference=sRef.child("images/"+file.getLastPathSegment());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -151,7 +144,23 @@ public class SharebucketActivity extends AppCompatActivity {
         return cursor.getString(index);
     }
 
-    public void addData(DataItem data){
+    public void addData(final DataItem data){
+        uploadTask=imgReference.putFile(file);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                showToast("스토리지 업로드 완료");
+                addUri(data);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    private void addFinalData(final DataItem data){
         mRef.child("Datas").push().setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -166,6 +175,27 @@ public class SharebucketActivity extends AppCompatActivity {
         });
     }
 
+    private void addUri(final DataItem data){
+        Task<Uri> urlTask=uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if(!task.isSuccessful()){
+                    throw task.getException();
+                }
+                return imgReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    downloadUri=task.getResult();
+                    assert downloadUri != null;
+                    data.setPicture(downloadUri.toString());
+                    addFinalData(data);
+                }
+            }
+        });
+    }
     public void showToast(String strings){
         Toast.makeText(SharebucketActivity.this,strings,Toast.LENGTH_SHORT).show();
     }
