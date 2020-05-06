@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -40,6 +42,7 @@ import java.io.IOException;
 public class SharebucketActivity extends AppCompatActivity {
 
     private static final int GALLERY_CODE=10;
+    private SharedPreferences auto;
     private FirebaseStorage storage = FirebaseStorage.getInstance("gs://hiaver2.appspot.com");
     private StorageReference sRef=storage.getReference();
     private FirebaseAuth mAuth=FirebaseAuth.getInstance();
@@ -51,11 +54,17 @@ public class SharebucketActivity extends AppCompatActivity {
     private TextView texttitle,textmessage;
     private String username="";
     private String title="";
+    private String picture="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sharebucket);
+
+        title=(String)getIntent().getSerializableExtra("titleInformation");
+
+        auto=getSharedPreferences("autologin", Activity.MODE_PRIVATE);
+        username=auto.getString("userName",null);
 
         imgView=(ImageView)findViewById(R.id.sbucket_img_img);
         choose=(Button)findViewById(R.id.sbucket_btn_choose);
@@ -66,6 +75,8 @@ public class SharebucketActivity extends AppCompatActivity {
         contents=(EditText)findViewById(R.id.sbucket_edit_contents);
         texttitle=(TextView)findViewById(R.id.sbucket_text_title);
         textmessage=(TextView)findViewById(R.id.sbucket_text_message);
+
+        texttitle.setText(title);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
@@ -83,7 +94,8 @@ public class SharebucketActivity extends AppCompatActivity {
                 }
                 else{
                     DataItem data=new DataItem(title,hash1,hash2,hash3,detail,username);
-
+                    data.setPicture(picture);
+                    addData(data);
                 }
             }
         });
@@ -111,7 +123,8 @@ public class SharebucketActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            sRef.child("images/"+file.getLastPathSegment()).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            picture="images/"+file.getLastPathSegment();
+            sRef.child(picture).putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     showToast("사진을 추가했습니다");

@@ -7,6 +7,7 @@ public class DataItem implements Serializable {
     private String hash1,hash2,hash3;
     private String detail;
     private String user;
+    private String picture;
 
     public DataItem(){
 
@@ -19,6 +20,14 @@ public class DataItem implements Serializable {
         this.hash3 = hash3;
         this.detail = detail;
         this.user = user;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getTitle() {

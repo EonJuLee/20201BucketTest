@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,19 +43,19 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_sharelist_page);
 
         FirebaseUser user=mAuth.getCurrentUser();
+        textuser=(TextView)findViewById(R.id.sharelist_text_user);
 
         auto=getSharedPreferences("autologin", Activity.MODE_PRIVATE);
         userName = auto.getString("userName", null);
 
+        Log.e("Error","Error "+userName);
         // 사용자 이름 가져오기
         if(userName==null){
             findName(user.getEmail());
-            SharedPreferences.Editor autoLogin = auto.edit();
-            autoLogin.putString("userName", userName);
-            autoLogin.commit();
         }
-
-        textuser=(TextView)findViewById(R.id.sharelist_text_user);
+        else{
+            textuser.setText(userName+"님 환영합니다");
+        }
 
         mylist=(Button)findViewById(R.id.sharelist_btn_mypage);
         logout=(Button)findViewById(R.id.sharelist_btn_logout);
@@ -90,6 +91,9 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
                     }
                 }
                 textuser.setText(userName+"님 환영합니다");
+                SharedPreferences.Editor autoLogin = auto.edit();
+                autoLogin.putString("userName", userName);
+                autoLogin.commit();
                 pdialog.dismiss();
             }
             @Override

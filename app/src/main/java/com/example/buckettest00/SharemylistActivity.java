@@ -83,4 +83,12 @@ public class SharemylistActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this,SharelistPage.class);
+        startActivity(intent);
+        finish();
+    }
 }
