@@ -191,4 +191,12 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SharelistPage.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

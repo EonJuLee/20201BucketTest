@@ -7,28 +7,108 @@
     android:orientation="vertical"
     tools:context=".AddbucketActivity">
 
-    <EditText
-        android:id="@+id/add_edit_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="버킷리스트" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/add_edit_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="내용" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/add_text_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+            <TextView
+                android:id="@+id/add_text_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="버킷리스트 추가" />
 
-    <Button
-        android:id="@+id/add_btn_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="추가" />
+            <TextView
+                android:id="@+id/add_text_guide0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="어떤 버킷리스트인데?" />
+
+            <EditText
+                android:id="@+id/add_edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="" />
+
+            <TextView
+                android:id="@+id/add_text_guide1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="널 도와주는 질문 1 - 왜 하고 싶은 거야?" />
+
+            <EditText
+                android:id="@+id/add_edit_detailwhy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="" />
+
+            <TextView
+                android:id="@+id/add_text_guide2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="널 도와주는 질문 2 - 어디서, 누구랑?" />
+
+            <EditText
+                android:id="@+id/add_edit_detailwho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="" />
+
+            <TextView
+                android:id="@+id/add_text_guide3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="태그를 달아보자" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/add_edit_hash1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="" />
+
+                <EditText
+                    android:id="@+id/add_edit_hash2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_text_guide4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="더 하고 싶은 말 있어? 생각나는대로 써보자" />
+
+            <EditText
+                android:id="@+id/add_edit_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="" />
+
+            <TextView
+                android:id="@+id/add_text_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <Button
+                android:id="@+id/add_btn_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="완료" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

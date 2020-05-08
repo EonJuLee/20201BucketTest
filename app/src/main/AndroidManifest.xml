@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SharemylistActivity"></activity>
         <activity android:name=".SharebucketActivity" />
-        <activity android:name=".AddbucketActivity" />
+        <activity android:name=".AddbucketActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".FindpwActivity" />
         <activity android:name=".InitialActivity" />
         <activity android:name=".SharelistPage" />
