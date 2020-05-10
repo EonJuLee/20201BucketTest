@@ -6,10 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".Mypage">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="20dp"
+        android:src="@drawable/mypagetitle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="90dp">
+
+        <Spinner
+            android:id="@+id/mypage_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="40dp"/>
+
+        <Button
+            android:id="@+id/mypage_btn_search"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:text="검색"/>
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mypage_rview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mypage_fab2"
@@ -20,6 +52,7 @@
         android:layout_marginRight="20dp"
         android:visibility="invisible"
         app:pressedTranslationZ="10dp"
+        android:src="@drawable/icon"
         android:clickable="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,6 +64,7 @@
         android:layout_marginRight="20dp"
         android:visibility="invisible"
         app:pressedTranslationZ="10dp"
+        android:src="@drawable/icon"
         android:clickable="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -40,7 +74,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="40dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="#9500ff"
+        android:src="@drawable/fbimg"
         android:clickable="true" />
 
 </FrameLayout>

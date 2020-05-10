@@ -12,13 +12,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mypage extends AppCompatActivity implements View.OnClickListener {
+public class Mypage extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private DatabaseHelper myHelper;
     private RecyclerView rview;
@@ -27,6 +32,8 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener {
     private Animation fab_open,fab_close;
     private boolean isFabOpen=false;
     private FloatingActionButton fab,fab1,fab2;
+    private Spinner spinner;
+    private Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +60,44 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener {
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+
+        btnSearch=(Button)findViewById(R.id.mypage_btn_search);
+        btnSearch.setOnClickListener(this);
+
+        spinner=(Spinner)findViewById(R.id.mypage_spinner);
+        spinner.setOnItemSelectedListener(this);
+
+        loadCate();
     }
+
+    public void loadCate(){
+        List<String> names=myHelper.getAllCate();
+        names.add("선택 안함");
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,names);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setSelection(names.size());
+        spinner.setAdapter(adapter);
+    }
+
 
     @Override
     public void onClick(View view) {
+        Intent intent=null;
         switch(view.getId()){
+            case R.id.mypage_btn_search:
+                break;
             case R.id.mypage_fab:
                 anim();
                 break;
             case R.id.mypage_fab1:
+                anim();
+                intent=new Intent(Mypage.this,AddDiaryActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.mypage_fab2:
                 anim();
-                Intent intent=new Intent(Mypage.this,AddbucketActivity.class);
+                intent=new Intent(Mypage.this,AddbucketActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -87,5 +119,18 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener {
             fab2.setClickable(true);
             isFabOpen=true;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String name = adapterView.getItemAtPosition(i).toString();
+        if (!name.equals("선택 안함")) {
+            Toast.makeText(adapterView.getContext(), name, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

@@ -46,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(BUCKET_COL_2,item.getTitle());
-        values.put(BUCKET_COL_3,"도전 중");
+        values.put(BUCKET_COL_3,"ING");
         values.put(BUCKET_COL_4,item.getDetail());
 
         long result=db.insert(TABLE_BUCKET,null,values);
@@ -81,6 +81,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int result=db.delete(TABLE_BUCKET,"id=?",new String[]{id});
         if(result==-1)return false;
         else return true;
+    }
+
+    public void addCate(String cate){
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+        values.put(CATEGORY_COL_2,cate);
+
+        db.insert(TABLE_CATEGORY,null,values);
+        db.close();
+    }
+
+    public List<String> getAllCate(){
+        List<String> list=new ArrayList<String>();
+
+        String selectQuery="select * from "+TABLE_CATEGORY;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                list.add(cursor.getString(1));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
 
 }

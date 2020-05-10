@@ -34,28 +34,38 @@
                 android:layout_height="wrap_content"
                 android:hint="" />
 
+            <Button
+                android:id="@+id/add_btn_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="널 도와주는 질문"/>
+
             <TextView
                 android:id="@+id/add_text_guide1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="널 도와주는 질문 1 - 왜 하고 싶은 거야?" />
 
             <EditText
                 android:id="@+id/add_edit_detailwhy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:hint="" />
 
             <TextView
                 android:id="@+id/add_text_guide2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="널 도와주는 질문 2 - 어디서, 누구랑?" />
 
             <EditText
                 android:id="@+id/add_edit_detailwho"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:hint="" />
 
             <TextView
@@ -96,17 +106,18 @@
                 android:layout_height="wrap_content"
                 android:hint="" />
 
-            <TextView
-                android:id="@+id/add_text_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="" />
-
             <Button
                 android:id="@+id/add_btn_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="완료" />
+
+            <TextView
+                android:id="@+id/add_text_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorRed"
+                android:text="" />
 
         </LinearLayout>
     </ScrollView>
