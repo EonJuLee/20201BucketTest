@@ -4,33 +4,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
+    <TextView
         android:id="@+id/editbox_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name" />
 
+    <TextView
+        android:id="@+id/editbox_cate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카테고리" />
+
+
     <EditText
         android:id="@+id/editbox_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="" />
 
     <EditText
         android:id="@+id/editbox_hash1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="" />
 
     <EditText
         android:id="@+id/editbox_hash2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name" />
+        android:text="" />
 
     <Button
         android:id="@+id/editbox_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="수정 완료" />
 </LinearLayout>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addbucket_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,13 +27,33 @@
                 android:id="@+id/add_text_guide0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="어떤 버킷리스트인데?" />
+            android:text="어떤 버킷리스트인데?" />
 
             <EditText
                 android:id="@+id/add_edit_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/add_spinner"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="40dp"/>
+
+                <Button
+                    android:id="@+id/add_btn_cateadd"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:text="추가"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/add_btn_help"
@@ -69,36 +90,10 @@
                 android:hint="" />
 
             <TextView
-                android:id="@+id/add_text_guide3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="태그를 달아보자" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/add_edit_hash1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="" />
-
-                <EditText
-                    android:id="@+id/add_edit_hash2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="" />
-
-            </LinearLayout>
-
-            <TextView
                 android:id="@+id/add_text_guide4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="더 하고 싶은 말 있어? 생각나는대로 써보자" />
+                android:text="지금 쓰고 싶은 말" />
 
             <EditText
                 android:id="@+id/add_edit_detail"
