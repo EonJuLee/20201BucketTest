@@ -62,7 +62,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
     private FloatingActionButton fab,fab1,fab2;
 
     private Spinner spinner;
-    private Button btnSearch;
+    private Button btnSearch,btnShare;
     private View mylayout;
 
     private String selected="모두";
@@ -103,6 +103,17 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
         loadCate();
         spinner.setSelection(names.size()-1,false);
         spinner.setOnItemSelectedListener(this);
+
+
+        btnShare=(Button)findViewById(R.id.mypage_btn_sharepage);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Mypage.this,SharePage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         btnSearch=(Button)findViewById(R.id.mypage_btn_search);
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +173,10 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                     }
                 });
             }
+            if(status.equals("인증")){
+                ((CustomViewHolder)holder).imgDone.setVisibility(View.VISIBLE);
+                ((CustomViewHolder)holder).itemView.setBackground(ContextCompat.getDrawable(Mypage.this,R.drawable.round_color_done_rectangle));
+            }
             if(status.equals("진행중")){
                 ((CustomViewHolder)holder).imgDone.setVisibility(View.GONE);
                 ((CustomViewHolder)holder).itemView.setBackground(ContextCompat.getDrawable(Mypage.this,R.drawable.round_rectangle));
@@ -195,6 +210,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 Intent intent = new Intent(Mypage.this,AddDiaryActivity.class);
+                                intent.putExtra("BucketInfo",items.get(i));
                                 startActivity(intent);
                                 finish();
                                 return true;
@@ -204,7 +220,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                 });
             }
             if(status.equals("완료")){
-                ((CustomViewHolder)holder).imgDone.setVisibility(View.VISIBLE);
+                ((CustomViewHolder)holder).imgDone.setVisibility(View.GONE);
                 ((CustomViewHolder)holder).itemView.setBackground(ContextCompat.getDrawable(Mypage.this,R.drawable.round_color_done_rectangle));
                 ((CustomViewHolder)holder).itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                     @Override
@@ -214,10 +230,10 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                         mIng.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                BucketItem item=items.get(i);
-                                item.setStatus("진행중");
-                                myHelper.updateItem(items.get(i).getId(),item);
-                                notifyItemChanged(i);
+                                Intent intent = new Intent(Mypage.this,AddDiaryActivity.class);
+                                intent.putExtra("BucketInfo",items.get(i));
+                                startActivity(intent);
+                                finish();
                                 return true;
                             }
                         });
@@ -295,7 +311,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                 break;
             case R.id.mypage_fab1:
                 anim();
-                intent=new Intent(Mypage.this,AddDiaryActivity.class);
+                intent=new Intent(Mypage.this,DiaryListActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -345,5 +361,11 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
             }
         });
         snackbar.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

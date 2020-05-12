@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,12 +39,19 @@ public class AddDiaryActivity extends AppCompatActivity {
     private TextView textView;
     private ImageView img;
     private View mylayout;
+    private BucketItem item; // 가져온 아이템
+
+    private boolean isAdded=false;
+    private Uri uri=null;
+    private Bitmap bitmap=null;
+    private String filePath="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_diary);
 
+        item=(BucketItem)getIntent().getSerializableExtra("BucketInfo");
         myHelper=new DatabaseHelper(AddDiaryActivity.this);
 
         btnAdd=(Button)findViewById(R.id.diary_btn_add);
@@ -52,6 +60,8 @@ public class AddDiaryActivity extends AppCompatActivity {
         img=(ImageView)findViewById(R.id.diary_img_img);
         textView=(TextView)findViewById(R.id.diary_text_text);
         mylayout=findViewById(R.id.diary_linearlayout);
+
+        textView.setText(item.getTitle());
 
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +78,19 @@ public class AddDiaryActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 추가하고, 그 데이터 status 변화하고
-                updateUI();
+                String title=textView.getText().toString().trim();
+                String detail=editText.getText().toString().trim();
+                DiaryItem ditem=new DiaryItem(title,detail,filePath);
+                boolean result=myHelper.addEntry(ditem);
+                if(result==true){
+                    item.setStatus("인증");
+                    myHelper.updateItem(item.getId(),item);
+                    showToast("일기 인증 완료");
+                    updateUI();
+                }
+                else{
+                    showSnackbar("저장 중 오류 발생");
+                }
             }
         });
     }
@@ -83,15 +104,18 @@ public class AddDiaryActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==GALLERY_CODE){
-            Uri uri=data.getData();
-            Uri file=Uri.fromFile(new File(getPath(uri)));
-            try{
-                Bitmap bitmap=MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
-                img.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            uri=data.getData();
+            filePath=getPath(uri);
+            if(uri!=null) {
+                isAdded=true;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    img.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -156,5 +180,9 @@ public class AddDiaryActivity extends AppCompatActivity {
         Intent intent = new Intent(AddDiaryActivity.this,Mypage.class);
         startActivity(intent);
         finish();
+    }
+
+    public void showToast(String contents){
+        Toast.makeText(AddDiaryActivity.this,contents,Toast.LENGTH_SHORT).show();
     }
 }

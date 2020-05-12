@@ -17,6 +17,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="MEMO";
     private static final String TABLE_BUCKET="BUCKETLIST";
     private static final String TABLE_CATEGORY="CATEGORYLIST";
+    private static final String TABLE_DIARY="DIARYLIST";
+    private static final String DIARY_COL1="ID";
+    private static final String DIARY_COL2="TITLE";
+    private static final String DIARY_COL3="PICTURE";
+    private static final String DIARY_COL4="DETAIL";
     private static final String BUCKET_COL_1="ID";
     private static final String BUCKET_COL_2="TITLE";
     private static final String BUCKET_COL_3="STATUS";
@@ -37,13 +42,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // 일기 테이블도 필요해보임
         db.execSQL("CREATE TABLE "+TABLE_BUCKET+"(ID INTEGER PRIMARY KEY,TITLE TEXT,STATUS TEXT,DETAIL TEXT,CAT TEXT,HASH1 TEXT,HASH2 TEXT)");
         db.execSQL("CREATE TABLE "+TABLE_CATEGORY+"(ID INTEGER PRIMARY KEY,CAT TEXT)");
+        db.execSQL("CREATE TABLE "+TABLE_DIARY+"(ID INTEGER PRIMARY KEY,TITLE TEXT,PICTURE TEXT,DETAIL TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_BUCKET);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_DIARY);
         onCreate(db);
+    }
+
+    public boolean addEntry(DiaryItem item){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(DIARY_COL2,item.getTitle());
+        values.put(DIARY_COL4,item.getDetail());
+        values.put(DIARY_COL3,item.getImage());
+        long result=db.insert(TABLE_DIARY,null,values);
+        db.close();
+        if(result==-1)return false;
+        else return true;
     }
 
     public boolean addItem(BucketItem item){
@@ -59,6 +78,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         if(result==-1)return false;
         else return true;
+    }
+
+    public List<DiaryItem> viewEntry(){
+        List<DiaryItem> items=new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String query="SELECT * FROM "+TABLE_DIARY;
+        Cursor cursor=db.rawQuery(query,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                DiaryItem item=new DiaryItem();
+                item.setId(cursor.getString(0));
+                item.setTitle(cursor.getString(1));
+                item.setDetail(cursor.getString(3));
+                item.setImage(cursor.getString(2));
+                items.add(item);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return items;
     }
 
     public List<BucketItem> viewItem(){

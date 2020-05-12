@@ -42,7 +42,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
     private DatabaseReference mRef=mDatabase.getReference();
     private FirebaseStorage mStorage=FirebaseStorage.getInstance();
     private List<DataItem> items=new ArrayList<DataItem>();
-    private Button logout,mylist;
+    private Button logout,mylist,mypage;
     private TextView textuser;
     private RecyclerView rview;
     private String userName;
@@ -68,6 +68,16 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
         }
 
         mylist=(Button)findViewById(R.id.sharelist_btn_mypage);
+        mypage=(Button)findViewById(R.id.sharelist_btn_tomypage);
+        mypage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(SharelistPage.this,Mypage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         logout=(Button)findViewById(R.id.sharelist_btn_logout);
         logout.setOnClickListener(this);
 
@@ -195,7 +205,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(SharelistPage.this,MainActivity.class);
+        Intent intent = new Intent(SharelistPage.this,Mypage.class);
         startActivity(intent);
         finish();
     }

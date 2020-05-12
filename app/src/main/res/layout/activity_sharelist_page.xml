@@ -19,6 +19,12 @@
         android:layout_height="wrap_content"
         android:text="내 버킷리스트 공유하기" />
 
+    <Button
+        android:id="@+id/sharelist_btn_tomypage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내 페이지로 가기" />
+
     <TextView
         android:id="@+id/sharelist_text_user"
         android:layout_width="match_parent"

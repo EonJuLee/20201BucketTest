@@ -1,6 +1,8 @@
 package com.example.buckettest00;
 
-public class BucketItem {
+import java.io.Serializable;
+
+public class BucketItem implements Serializable {
 
     // 이후, 시간도 추가적으로 필요함
     private String id;
