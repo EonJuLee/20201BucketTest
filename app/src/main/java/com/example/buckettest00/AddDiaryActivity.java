@@ -85,7 +85,7 @@ public class AddDiaryActivity extends AppCompatActivity {
                 if(result==true){
                     item.setStatus("인증");
                     myHelper.updateItem(item.getId(),item);
-                    showToast("일기 인증 완료");
+                    showToast("인증 일기를 추가하였습니다");
                     updateUI();
                 }
                 else{

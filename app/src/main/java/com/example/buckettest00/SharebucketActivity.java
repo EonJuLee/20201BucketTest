@@ -7,6 +7,7 @@ import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -60,6 +61,7 @@ public class SharebucketActivity extends AppCompatActivity {
     private String picture="";
     private Uri file,downloadUri;
     private UploadTask uploadTask;
+    private ProgressDialog pdialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class SharebucketActivity extends AppCompatActivity {
 
         auto=getSharedPreferences("autologin", Activity.MODE_PRIVATE);
         username=auto.getString("userName",null);
+
+        pdialog=new ProgressDialog(this);
 
         imgView=(ImageView)findViewById(R.id.sbucket_img_img);
         choose=(Button)findViewById(R.id.sbucket_btn_choose);
@@ -100,6 +104,8 @@ public class SharebucketActivity extends AppCompatActivity {
                 else{
                     DataItem data=new DataItem(title,hash1,hash2,hash3,detail,username);
                     data.setPicture(picture);
+                    pdialog.setTitle("정보를 불러오는 중입니다");
+                    pdialog.show();
                     addData(data);
                 }
             }
@@ -117,18 +123,20 @@ public class SharebucketActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
-        if(requestCode==GALLERY_CODE){
-            Uri uri=data.getData();
-            file=Uri.fromFile(new File(getPath(uri)));
-            try{
-                Bitmap bitmap=MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
-                imgView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        if(requestCode==GALLERY_CODE) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                file = Uri.fromFile(new File(getPath(uri)));
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    imgView.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imgReference = sRef.child("images/" + file.getLastPathSegment());
             }
-            imgReference=sRef.child("images/"+file.getLastPathSegment());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -145,19 +153,24 @@ public class SharebucketActivity extends AppCompatActivity {
     }
 
     public void addData(final DataItem data){
-        uploadTask=imgReference.putFile(file);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                showToast("스토리지 업로드 완료");
-                addUri(data);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        if(file!=null) {
+            uploadTask = imgReference.putFile(file);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    showToast("스토리지 업로드 완료");
+                    addUri(data);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            addFinalData(data);
+        }
     }
 
     private void addFinalData(final DataItem data){
@@ -166,6 +179,7 @@ public class SharebucketActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     showToast("업로드 완료");
+                    pdialog.dismiss();
                     updateUI();
                 }
                 else{
@@ -196,11 +210,13 @@ public class SharebucketActivity extends AppCompatActivity {
             }
         });
     }
+
     public void showToast(String strings){
         Toast.makeText(SharebucketActivity.this,strings,Toast.LENGTH_SHORT).show();
     }
 
     public void showMessage(String strings){
+        textmessage.setVisibility(View.VISIBLE);
         textmessage.setText(strings);
     }
 
@@ -208,5 +224,11 @@ public class SharebucketActivity extends AppCompatActivity {
         Intent intent=new Intent(SharebucketActivity.this,SharelistPage.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateUI();
     }
 }

@@ -66,4 +66,10 @@ public class FindpwActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateUI();
+    }
 }

@@ -29,6 +29,7 @@ public class DiaryListActivity extends AppCompatActivity {
     private RecyclerView rview;
     private DiaryAdapter dadapter;
     private List<DiaryItem> items=new ArrayList<>();
+    private ImageView imgShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,21 @@ public class DiaryListActivity extends AppCompatActivity {
         Log.e("Error","Error"+items.size());
 
         rview=(RecyclerView)findViewById(R.id.diarylist_rview);
-        rview.setLayoutManager(new GridLayoutManager(this,3));
+        rview.setLayoutManager(new GridLayoutManager(this,1));
 
         dadapter=new DiaryAdapter();
         rview.setAdapter(dadapter);
         dadapter.notifyDataSetChanged();
+
+        imgShare=(ImageView)findViewById(R.id.sharepage_btn_sharepage);
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DiaryListActivity.this,SharePage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private class DiaryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -63,6 +74,9 @@ public class DiaryListActivity extends AppCompatActivity {
             ((CustomViewHolder)holder).textDetail.setText(item.getTitle());
             // ((CustomViewHolder)holder).textDetail.setVisibility(View.VISIBLE);
             File imgFile=new File(item.getImage());
+            if(item.getDetail().equals("")){
+                ((CustomViewHolder)holder).textDetail.setVisibility(View.GONE);
+            }
             if(imgFile.exists()){
                 Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 //Matrix matrix1 = new Matrix() ;
@@ -71,7 +85,8 @@ public class DiaryListActivity extends AppCompatActivity {
                 //((CustomViewHolder)holder).img.setImageMatrix(matrix1);
             }
             else{
-                ((CustomViewHolder)holder).img.setImageDrawable(getResources().getDrawable(R.drawable.fbimg));
+                ((CustomViewHolder)holder).img.setVisibility(View.GONE);
+                //((CustomViewHolder)holder).img.setImageDrawable(getResources().getDrawable(R.drawable.fbimg));
             }
         }
 

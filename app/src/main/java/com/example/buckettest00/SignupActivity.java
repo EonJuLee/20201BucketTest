@@ -147,4 +147,12 @@ public class SignupActivity extends AppCompatActivity {
     public void showToast(String contents){
         Toast.makeText(SignupActivity.this,contents,Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(SignupActivity.this,SharePage.class);
+        startActivity(intent);
+        finish();
+    }
 }

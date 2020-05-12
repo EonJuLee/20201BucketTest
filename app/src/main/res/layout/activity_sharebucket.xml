@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBrown"
     android:orientation="vertical"
     tools:context=".SharebucketActivity">
 
@@ -12,61 +13,193 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="20dp"
+            android:background="@drawable/round_rectangle"
             android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/add_text_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bmjua"
+                    android:textSize="30dp"
+                    android:gravity="center"
+                    android:text="버킷리스트 공유 신청서" />
+
+                <ImageView
+                    android:src="@drawable/pic_done_final"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="20dp"
+                android:text="1. 어떤 버킷리스트 인가요?" />
 
             <TextView
                 android:id="@+id/sbucket_text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="버킷리스트 제목" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:textSize="25dp"
+                android:padding="6dp"
+                android:background="@drawable/round_rectangle"
+                android:hint="" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="20dp"
+                android:text="2. 추천하는 이유가 무엇인가요?" />
 
             <EditText
                 android:id="@+id/sbucket_edit_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="간단한 설명" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:textSize="25dp"
+                android:padding="5dp"
+                android:background="@drawable/round_rectangle"
+                android:hint="" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="20dp"
+                android:text="2. 잘 알아볼 수 있게 해시코드를 달아주세요" />
 
             <EditText
                 android:id="@+id/sbucket_edit_hash1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="해시코드 #해외여행" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:textSize="25dp"
+                android:padding="5dp"
+                android:background="@drawable/round_rectangle"
+                android:hint="해시코드 1" />
 
             <EditText
                 android:id="@+id/sbucket_edit_hash2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="해시코드 #1순위여행지" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:textSize="25dp"
+                android:padding="5dp"
+                android:background="@drawable/round_rectangle"
+                android:hint="해시코드 2" />
 
             <EditText
                 android:id="@+id/sbucket_edit_hash3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="나중에는 앞에 다 텍스트 넣어줘" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:textSize="25dp"
+                android:padding="5dp"
+                android:background="@drawable/round_rectangle"
+                android:hint="해시코드 3" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="20dp"
+                android:text="3. 등록하고 싶은 사진이 있나요?" />
 
             <Button
                 android:id="@+id/sbucket_btn_choose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="사진첩 열기" />
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:background="@drawable/round_color_rectangle"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="15dp"
+                android:text="갤러리 열기" />
 
             <ImageView
                 android:id="@+id/sbucket_img_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                app:srcCompat="@drawable/fbimg"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
+                android:layout_width="200dp"
+                android:layout_height="200dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp" />
 
             <Button
                 android:id="@+id/sbucket_btn_share"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:background="@drawable/yellow_round_rectangle"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/bmjua"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:text="공유" />
 
             <TextView
                 android:id="@+id/sbucket_text_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:fontFamily="@font/bmjua"
+                android:textSize="10dp"
                 android:text="" />
         </LinearLayout>
     </ScrollView>

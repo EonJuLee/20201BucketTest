@@ -54,6 +54,7 @@ public class SharemylistActivity extends AppCompatActivity {
             ((CustomViewHolder)holder).bucket_title.setText(bucketItem.getTitle());
             ((CustomViewHolder)holder).bucket_status.setVisibility(View.GONE);
             ((CustomViewHolder)holder).bucket_detail.setVisibility(View.GONE);
+            ((CustomViewHolder)holder).bucket_hash.setVisibility(View.GONE);
             ((CustomViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,12 +75,14 @@ public class SharemylistActivity extends AppCompatActivity {
             private TextView bucket_title;
             private TextView bucket_status;
             private TextView bucket_detail;
+            private TextView bucket_hash;
 
             public CustomViewHolder(View view) {
                 super(view);
                 bucket_title=(TextView)view.findViewById(R.id.item_mypage_title);
                 bucket_status=(TextView)view.findViewById(R.id.item_mypage_status);
                 bucket_detail=(TextView)view.findViewById(R.id.item_mypage_detail);
+                bucket_hash=(TextView)view.findViewById(R.id.item_mypage_hash);
             }
         }
     }

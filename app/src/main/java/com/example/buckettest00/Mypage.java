@@ -62,7 +62,8 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
     private FloatingActionButton fab,fab1,fab2;
 
     private Spinner spinner;
-    private Button btnSearch,btnShare;
+    private Button btnSearch;
+    private ImageView btnShare;
     private View mylayout;
 
     private String selected="모두";
@@ -105,7 +106,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
         spinner.setOnItemSelectedListener(this);
 
 
-        btnShare=(Button)findViewById(R.id.mypage_btn_sharepage);
+        btnShare=(ImageView)findViewById(R.id.mypage_btn_sharepage);
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -365,7 +366,9 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
 
     @Override
     public void onBackPressed() {
-        finish();
         super.onBackPressed();
+        Intent intent=new Intent(Mypage.this,SharePage.class);
+        startActivity(intent);
+        finish();
     }
 }

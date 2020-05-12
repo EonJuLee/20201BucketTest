@@ -42,7 +42,8 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
     private DatabaseReference mRef=mDatabase.getReference();
     private FirebaseStorage mStorage=FirebaseStorage.getInstance();
     private List<DataItem> items=new ArrayList<DataItem>();
-    private Button logout,mylist,mypage;
+    private TextView mylist;
+    private ImageView mypage,logout;
     private TextView textuser;
     private RecyclerView rview;
     private String userName;
@@ -67,8 +68,8 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
             textuser.setText(userName+"님 환영합니다");
         }
 
-        mylist=(Button)findViewById(R.id.sharelist_btn_mypage);
-        mypage=(Button)findViewById(R.id.sharelist_btn_tomypage);
+        mylist=(TextView) findViewById(R.id.sharelist_btn_mypage);
+        //mypage=(ImageView)findViewById(R.id.sharelist)
         mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +79,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        logout=(Button)findViewById(R.id.sharelist_btn_logout);
+        logout=(ImageView) findViewById(R.id.sharelist_btn_logout);
         logout.setOnClickListener(this);
 
         mylist.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +96,10 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
         radapter=new AllDataAdapter();
         rview.setAdapter(radapter);
 
+        final ProgressDialog pdialog=new ProgressDialog(this);
+        pdialog.setTitle("정보를 불러오는 중입니다");
+        pdialog.show();
+
         mRef.child("Datas").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,6 +110,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
                     Log.e("Error","Error"+dataItem.toString());
                 }
                 radapter.notifyDataSetChanged();
+                pdialog.dismiss();
             }
 
             @Override
@@ -115,7 +121,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateUI(){
-        Intent intent=new Intent(SharelistPage.this,MainActivity.class);
+        Intent intent=new Intent(SharelistPage.this,SharePage.class);
         startActivity(intent);
         finish();
     }
@@ -173,14 +179,28 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
             final DataItem dataItem=items.get(position);
-            final String hashString="#"+dataItem.getHash1()+" #"+dataItem.getHash2()+" #"+dataItem.getHash3();
+            final String hash1=dataItem.getHash1();
+            final String hash2=dataItem.getHash2();
+            final String hash3=dataItem.getHash3();
+            final String hashString=getHash(hash1,hash2,hash3);
             ((CustomViewHolder)holder).share_title.setText(dataItem.getTitle());
             ((CustomViewHolder)holder).share_hash.setText(hashString);
-            Glide.with(SharelistPage.this).load(dataItem.getPicture()).into(((CustomViewHolder) holder).share_img);
-            ((CustomViewHolder)holder).share_img.setVisibility(View.VISIBLE);
-            Log.e("Error","Error"+dataItem.toString());
+            ((CustomViewHolder)holder).share_detail.setText(dataItem.getDetail());
+            if(!dataItem.getPicture().equals("")) {
+                ((CustomViewHolder) holder).share_img.setVisibility(View.VISIBLE);
+                Glide.with(SharelistPage.this).load(dataItem.getPicture()).into(((CustomViewHolder) holder).share_img);
+            }
+            if(!hashString.equals("")){
+                ((CustomViewHolder)holder).share_hash.setVisibility(View.VISIBLE);
+            }
+            ((CustomViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((CustomViewHolder)holder).share_detail.setVisibility(View.VISIBLE);
+                }
+            });
         }
 
         @Override
@@ -192,21 +212,35 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
             private TextView share_title;
             private TextView share_hash;
             private ImageView share_img;
+            private TextView share_detail;
 
             public CustomViewHolder(View view) {
                 super(view);
                 share_title=(TextView)view.findViewById(R.id.item_sharepage_title);
                 share_hash=(TextView)view.findViewById(R.id.item_sharepage_hash);
                 share_img=(ImageView)view.findViewById(R.id.item_sharepage_img);
+                share_detail=(TextView)view.findViewById(R.id.item_sharepage_detail);
             }
         }
+    }
+
+    public String getHash(String hash1,String hash2,String hash3){
+        String hash="";
+        if(!hash1.equals("")){
+            hash+="#"+hash1+" ";
+        }
+        if(!hash2.equals("")){
+            hash+="#"+hash2+" ";
+        }
+        if(!hash3.equals("")){
+            hash+="#"+hash3;
+        }
+        return hash;
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(SharelistPage.this,Mypage.class);
-        startActivity(intent);
         finish();
     }
 }

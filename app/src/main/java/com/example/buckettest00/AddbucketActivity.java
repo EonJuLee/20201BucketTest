@@ -66,7 +66,7 @@ public class AddbucketActivity extends AppCompatActivity implements AdapterView.
                 textGuide2.setVisibility(View.VISIBLE);
                 editWho.setVisibility(View.VISIBLE);
                 editWhy.setVisibility(View.VISIBLE);
-                showSnackbar("선택 항목입니다\n간단하게 입력하세요");
+                showSnackbar("해시태그를 간단하게 달아주세요");
             }
         });
 
@@ -115,8 +115,7 @@ public class AddbucketActivity extends AppCompatActivity implements AdapterView.
                             if(result==true){
                                 showToast("새 카테고리 등록 성공");
                                 loadCate();
-                                // 이거 하면 오류
-                                // spinner.setSelection(names.size());
+                                spinner.setSelection(names.size()-1);
                             }
                             else{
                                 showToast("새 카테고리 등록 실패");
@@ -137,8 +136,8 @@ public class AddbucketActivity extends AppCompatActivity implements AdapterView.
 
     public void loadCate(){
         names=myHelper.getAllCate();
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,names);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.item_spinner,names);
+        adapter.setDropDownViewResource(R.layout.item_dropdown);
         spinner.setAdapter(adapter);
     }
 

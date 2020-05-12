@@ -4,42 +4,129 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".SharePage">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/mypagetitle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bmjua"
+        android:textSize="30dp" />
+
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:id="@+id/share_btn_glogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <EditText
         android:id="@+id/share_edit_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bmjua"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:background="@drawable/round_rectangle"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:hint="이메일" />
 
     <EditText
         android:id="@+id/share_edit_pw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="비밀번호" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/round_rectangle"
+        android:fontFamily="@font/bmjua"
+        android:hint="비밀번호"
+        android:padding="10dp"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/share_btn_signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_color_rectangle"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bmjua"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textSize="15dp"
         android:text="이메일 로그인" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/share_btn_glogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/share_btn_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/yellow_round_rectangle"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/bmjua"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="15dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:text="이메일 회원가입" />
 
     <Button
         android:id="@+id/share_btn_find"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/yellow_round_rectangle"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bmjua"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:textSize="15dp"
         android:text="비밀번호 찾기" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bmjua"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/share_btn_mypage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBrown"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bmjua"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:textSize="15dp"
+        android:text="마이페이지로" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bmjua"
+        android:textSize="60dp" />
 
 </LinearLayout>

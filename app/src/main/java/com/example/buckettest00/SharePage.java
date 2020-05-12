@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,6 +47,7 @@ public class SharePage extends AppCompatActivity implements View.OnClickListener
     private boolean isnewAccount=true;
     private SharedPreferences auto;
     private String loginID,loginPW;
+    private TextView mypage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class SharePage extends AppCompatActivity implements View.OnClickListener
         find=(Button)findViewById(R.id.share_btn_find);
         editemail=(EditText)findViewById(R.id.share_edit_email);
         editpw=(EditText)findViewById(R.id.share_edit_pw);
+        mypage=(TextView)findViewById(R.id.share_btn_mypage);
 
         auto=getSharedPreferences("autologin", Activity.MODE_PRIVATE);
         loginID = auto.getString("inputId", null);
@@ -100,6 +103,15 @@ public class SharePage extends AppCompatActivity implements View.OnClickListener
                 } else {
                     login(email, pw);
                 }
+            }
+        });
+
+        mypage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(SharePage.this,Mypage.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -240,5 +252,11 @@ public class SharePage extends AppCompatActivity implements View.OnClickListener
                 showToast("이메일 인증 후 사용할 수 있습니다");
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
