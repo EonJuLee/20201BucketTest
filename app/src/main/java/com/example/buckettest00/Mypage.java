@@ -1,18 +1,32 @@
 package com.example.buckettest00;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.media.MediaActionSound;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +35,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +63,11 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
 
     private Spinner spinner;
     private Button btnSearch;
+    private View mylayout;
+
+    private String selected="모두";
+    private List<String> names=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +75,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
         setContentView(R.layout.activity_mypage);
 
         myHelper=new DatabaseHelper(Mypage.this);
+        mylayout=findViewById(R.id.mypage_framelayout);
 
         rview=(RecyclerView)findViewById(R.id.mypage_rview);
         rview.setLayoutManager(new LinearLayoutManager(Mypage.this));
@@ -73,20 +98,35 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
 
-        btnSearch=(Button)findViewById(R.id.mypage_btn_search);
-        btnSearch.setOnClickListener(this);
-
         spinner=(Spinner)findViewById(R.id.mypage_spinner);
-        spinner.setOnItemSelectedListener(this);
 
         loadCate();
+        spinner.setSelection(names.size()-1,false);
+        spinner.setOnItemSelectedListener(this);
+
+        btnSearch=(Button)findViewById(R.id.mypage_btn_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!selected.equals("모두")) {
+                    items.clear();
+                    items.addAll(myHelper.selectItem(selected));
+                    radapter.notifyDataSetChanged();
+                }
+                else{
+                    items.clear();
+                    items.addAll(myHelper.viewItem());
+                    radapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     public class BucketAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage,null,false);
+            View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage,parent,false);
             return new CustomViewHolder(view);
         }
 
@@ -103,6 +143,13 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
             ((CustomViewHolder)holder).textStatus.setText(status);
             ((CustomViewHolder)holder).textDetail.setText(detail);
             ((CustomViewHolder)holder).textHash.setText(hash);
+            ((CustomViewHolder)holder).textNotshow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((CustomViewHolder)holder).textDetail.setVisibility(View.GONE);
+                    ((CustomViewHolder)holder).textNotshow.setVisibility(View.GONE);
+                }
+            });
             if(!hash.equals("")){
                 ((CustomViewHolder)holder).textHash.setVisibility(View.VISIBLE);
             }
@@ -111,15 +158,19 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                     @Override
                     public void onClick(View view) {
                         ((CustomViewHolder)holder).textDetail.setVisibility(View.VISIBLE);
+                        ((CustomViewHolder)holder).textNotshow.setVisibility(View.VISIBLE);
                     }
                 });
             }
-            if(status.equals("ING")){
+            if(status.equals("진행중")){
+                ((CustomViewHolder)holder).imgDone.setVisibility(View.GONE);
+                ((CustomViewHolder)holder).itemView.setBackground(ContextCompat.getDrawable(Mypage.this,R.drawable.round_rectangle));
                 ((CustomViewHolder)holder).itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
                         MenuItem mEdit=menu.add(Menu.NONE,1001,1,"삭제");
                         MenuItem mDone=menu.add(Menu.NONE,1002,2,"완료");
+                        MenuItem mVerify=menu.add(Menu.NONE,1000,3,"인증");
                         mEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -140,21 +191,43 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
                                 return true;
                             }
                         });
+                        mVerify.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                Intent intent = new Intent(Mypage.this,AddDiaryActivity.class);
+                                startActivity(intent);
+                                finish();
+                                return true;
+                            }
+                        });
                     }
                 });
             }
             if(status.equals("완료")){
+                ((CustomViewHolder)holder).imgDone.setVisibility(View.VISIBLE);
+                ((CustomViewHolder)holder).itemView.setBackground(ContextCompat.getDrawable(Mypage.this,R.drawable.round_color_done_rectangle));
                 ((CustomViewHolder)holder).itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-                        MenuItem mIng=menu.add(Menu.NONE,1003,1,"진행중");
+                        MenuItem mIng=menu.add(Menu.NONE,1003,1,"인증");
+                        MenuItem mEdit=menu.add(Menu.NONE,1004,1,"삭제");
                         mIng.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 BucketItem item=items.get(i);
-                                item.setStatus("ING");
+                                item.setStatus("진행중");
                                 myHelper.updateItem(items.get(i).getId(),item);
                                 notifyItemChanged(i);
+                                return true;
+                            }
+                        });
+                        mEdit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                myHelper.deleteItem(items.get(i).getId());
+                                items.remove(i);
+                                notifyItemRemoved(i);
+                                notifyItemRangeChanged(i,items.size());
                                 return true;
                             }
                         });
@@ -173,18 +246,22 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
             private TextView textHash;
             private TextView textStatus;
             private TextView textDetail;
+            private TextView textNotshow;
+            private ImageView imgDone;
 
             public CustomViewHolder(View view) {
                 super(view);
+                imgDone=view.findViewById(R.id.item_mypage_img);
                 textTitle=view.findViewById(R.id.item_mypage_title);
                 textStatus=view.findViewById(R.id.item_mypage_status);
                 textDetail=view.findViewById(R.id.item_mypage_detail);
                 textHash=view.findViewById(R.id.item_mypage_hash);
+                textNotshow=view.findViewById(R.id.item_mypage_notshow);
             }
         }
     }
 
-    public String getHash(String hash1,String hash2){
+    public String getHash(String hash1, String hash2){
         String hash="";
         if(!hash1.equals("")){
             hash+="#"+hash1+" ";
@@ -197,11 +274,12 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
 
 
     public void loadCate(){
-        List<String> names=myHelper.getAllCate();
-        names.add("선택 안함");
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,names);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setSelection(names.size());
+        names=myHelper.getAllCate();
+        if(!names.contains("모두")) {
+            names.add("모두");
+        }
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.item_spinner,names);
+        adapter.setDropDownViewResource(R.layout.item_dropdown);
         spinner.setAdapter(adapter);
     }
 
@@ -249,14 +327,23 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String name = adapterView.getItemAtPosition(i).toString();
-        if (!name.equals("선택 안함")) {
-            Toast.makeText(adapterView.getContext(), name, Toast.LENGTH_SHORT).show();
-        }
+        Log.e("Error","Error "+"itemselected안");
+        selected= adapterView.getItemAtPosition(i).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+        Log.e("Error","Error "+"nothingselected안");
+    }
 
+    public void showSnackbar(String contents){
+        final Snackbar snackbar=Snackbar.make(mylayout,contents,Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("확인", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 }

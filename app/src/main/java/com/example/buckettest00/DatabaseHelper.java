@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -49,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(BUCKET_COL_2,item.getTitle());
-        values.put(BUCKET_COL_3,"ING");
+        values.put(BUCKET_COL_3,"진행중");
         values.put(BUCKET_COL_4,item.getDetail());
         values.put(BUCKET_COL_5,item.getCgory());
         values.put(BUCKET_COL_6,item.getHash1());
@@ -66,6 +67,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String query="SELECT * FROM "+TABLE_BUCKET;
         Cursor cursor=db.rawQuery(query,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                BucketItem item=new BucketItem();
+                item.setId(cursor.getString(0));
+                item.setTitle(cursor.getString(1));
+                item.setStatus(cursor.getString(2));
+                item.setDetail(cursor.getString(3));
+                item.setCgory(cursor.getString(4));
+                item.setHash1(cursor.getString(5));
+                item.setHash2(cursor.getString(6));
+                items.add(item);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return items;
+    }
+
+    public List<BucketItem> selectItem(String name){
+        List<BucketItem> items=new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String query="SELECT * FROM "+TABLE_BUCKET+" WHERE CAT=?";
+        Log.e("Error","Error "+query);
+        Cursor cursor=db.rawQuery(query,new String[]{name});
 
         if(cursor.moveToFirst()){
             do{
