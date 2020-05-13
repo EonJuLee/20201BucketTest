@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".SharelistPage">
 
+
     <ImageView
         android:id="@+id/sharelist_btn_tomy"
         android:layout_width="30dp"
@@ -26,6 +27,7 @@
         android:textSize="10dp" />
 
     <ImageView
+        android:id="@+id/sharelist_btn_logout"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
@@ -46,7 +48,6 @@
         android:textSize="10dp" />
 
     <ImageView
-        android:id="@+id/sharelist_btn_logout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="5dp"

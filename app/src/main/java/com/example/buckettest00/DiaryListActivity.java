@@ -71,7 +71,7 @@ public class DiaryListActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
             DiaryItem item=items.get(i);
             ((CustomViewHolder)holder).textTitle.setText(item.getTitle());
-            ((CustomViewHolder)holder).textDetail.setText(item.getTitle());
+            ((CustomViewHolder)holder).textDetail.setText(item.getDetail());
             // ((CustomViewHolder)holder).textDetail.setVisibility(View.VISIBLE);
             File imgFile=new File(item.getImage());
             if(item.getDetail().equals("")){

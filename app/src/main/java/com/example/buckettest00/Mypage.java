@@ -367,8 +367,6 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener, A
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(Mypage.this,SharePage.class);
-        startActivity(intent);
         finish();
     }
 }

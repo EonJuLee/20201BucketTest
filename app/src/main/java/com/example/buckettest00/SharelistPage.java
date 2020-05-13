@@ -43,7 +43,7 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
     private FirebaseStorage mStorage=FirebaseStorage.getInstance();
     private List<DataItem> items=new ArrayList<DataItem>();
     private TextView mylist;
-    private ImageView mypage,logout;
+    private ImageView logout,mypage;
     private TextView textuser;
     private RecyclerView rview;
     private String userName;
@@ -69,11 +69,11 @@ public class SharelistPage extends AppCompatActivity implements View.OnClickList
         }
 
         mylist=(TextView) findViewById(R.id.sharelist_btn_mypage);
-        //mypage=(ImageView)findViewById(R.id.sharelist)
+        mypage=(ImageView)findViewById(R.id.sharelist_btn_tomy);
         mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(SharelistPage.this,Mypage.class);
+                Intent intent = new Intent(SharelistPage.this,Mypage.class);
                 startActivity(intent);
                 finish();
             }
